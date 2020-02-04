@@ -19,6 +19,14 @@ let process = require('process');
 let fs = require('fs');
 // let readlineSync = require('readline-sync');
 
+function updateTextFile(tasks) {
+  let taskString = '';
+  for (let task of tasks) {
+    taskString += task.toString() + '\n';
+  }
+  fs.writeFileSync('todos.txt', taskString);
+}
+
 function listTasks(tasks) {
   for (let i = 0; i < tasks.length; i++) {
     console.log(` ${i + 1}: ${tasks[i]}`);
@@ -28,24 +36,21 @@ function listTasks(tasks) {
 function addTask(tasks) {
   let newTask = process.argv[3];
   tasks.push(newTask);
-  console.log(' Adding task to your to-do list...');
+  console.log();
+  console.log(` Adding "${newTask}" to your to-do list...`);
+  console.log();
   listTasks(tasks);
-  let taskString = '';
-  for (let task of tasks) {
-    taskString += task.toString() + '\n';
-  }
-  fs.writeFileSync('todos.txt', taskString);
+  updateTextFile(tasks);
 }
 
 function deleteTask(tasks) {
   let indexToDelete = process.argv[3] - 1;
+  console.log();
+  console.log(` Deleting "${tasks[indexToDelete]}" from your to-do list...`);
+  console.log();
   tasks.splice(indexToDelete, 1);
   listTasks(tasks);
-  let taskString = '';
-  for (let task of tasks) {
-    taskString += task.toString() + '\n';
-  }
-  fs.writeFileSync('todos.txt', taskString);
+  updateTextFile(tasks);
 }
 
 function processTaskList() {
