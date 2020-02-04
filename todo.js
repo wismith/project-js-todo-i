@@ -17,14 +17,30 @@ Keep the responsibilities separated as best you can:
 */
 let process = require('process');
 let fs = require('fs');
+// let readlineSync = require('readline-sync');
 
 function listTasks() {
-  let tasks = fs.readFileSync('todos.txt','utf-8').split('\n');
-  tasks.pop();  // This is how I'm currently handling the blank last line of the text file. Better way?
-  console.log(tasks);
+  let tasks = fs.readFileSync('todos.txt', 'utf-8').split('\n');
+  tasks.pop(); // This is how I'm currently handling the blank last line of the text file. Better way?
   for (let i = 1; i <= tasks.length; i++) {
-    console.log(` ${i}: ${tasks[i-1]}`);
+    console.log(` ${i}: ${tasks[i - 1]}`);
   }
 }
 
-listTasks();
+function addTask() {
+  let newTask = process.argv[3];
+  fs.appendFileSync('todos.txt', newTask + '\n');
+  console.log(' Adding task to your to-do list...');
+  listTasks();
+}
+
+let action = process.argv[2];
+if (action === 'list') {
+  listTasks();
+}
+if (action === 'add') {
+  addTask();
+}
+
+if (require.main === module) {
+}
