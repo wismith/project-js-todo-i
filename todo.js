@@ -20,8 +20,8 @@ let fs = require('fs');
 // let readlineSync = require('readline-sync');
 
 function listTasks(tasks) {
-  for (let i = 1; i <= tasks.length; i++) {
-    console.log(` ${i}: ${tasks[i - 1]}`);
+  for (let i = 0; i < tasks.length; i++) {
+    console.log(` ${i + 1}: ${tasks[i]}`);
   }
 }
 
@@ -49,7 +49,8 @@ function deleteTask(tasks) {
 }
 
 function processTaskList() {
-  let tasks = fs.readFileSync('todos.txt', 'utf-8').split('\n').pop(); // This is how I'm currently handling the blank last line of the text file. Better way?
+  let tasks = fs.readFileSync('todos.txt', 'utf-8').split('\n'); // This is how I'm currently handling the blank last line of the text file. Better way?
+  tasks.pop();
   let action = process.argv[2];
   if (action === 'list') {
     listTasks(tasks);
