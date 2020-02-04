@@ -19,28 +19,49 @@ let process = require('process');
 let fs = require('fs');
 // let readlineSync = require('readline-sync');
 
-function listTasks() {
-  let tasks = fs.readFileSync('todos.txt', 'utf-8').split('\n');
-  tasks.pop(); // This is how I'm currently handling the blank last line of the text file. Better way?
+function listTasks(tasks) {
   for (let i = 1; i <= tasks.length; i++) {
     console.log(` ${i}: ${tasks[i - 1]}`);
   }
 }
 
-function addTask() {
+function addTask(tasks) {
   let newTask = process.argv[3];
-  fs.appendFileSync('todos.txt', newTask + '\n');
+  tasks.push(newTask);
   console.log(' Adding task to your to-do list...');
-  listTasks();
+  listTasks(tasks);
+  let taskString = '';
+  for (let task of tasks) {
+    taskString += task.toString() + '\n';
+  }
+  fs.writeFileSync('todos.txt', taskString);
 }
 
-let action = process.argv[2];
-if (action === 'list') {
-  listTasks();
+function deleteTask(tasks) {
+  let indexToDelete = process.argv[3] - 1;
+  tasks.splice(indexToDelete, 1);
+  listTasks(tasks);
+  let taskString = '';
+  for (let task of tasks) {
+    taskString += task.toString() + '\n';
+  }
+  fs.writeFileSync('todos.txt', taskString);
 }
-if (action === 'add') {
-  addTask();
+
+function processTaskList() {
+  let tasks = fs.readFileSync('todos.txt', 'utf-8').split('\n').pop(); // This is how I'm currently handling the blank last line of the text file. Better way?
+  let action = process.argv[2];
+  if (action === 'list') {
+    listTasks(tasks);
+  }
+  if (action === 'add') {
+    addTask(tasks);
+  }
+  if (action === 'delete') {
+    deleteTask(tasks);
+  }
 }
 
 if (require.main === module) {
+  processTaskList();
 }
