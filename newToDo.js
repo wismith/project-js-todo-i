@@ -23,12 +23,12 @@ class ToDoList {
     this.tasks = [];
   }
 
-  addTask(description, priority) {
-    this.tasks.push(new Task(description, priority));
+  add(task) {
+    this.tasks.push(task);
   }
 
   deleteTask(index) {
-    this.tasks.splice(index, 1);
+    return this.tasks.splice(index, 1);
   }
 
   editTask(index, change) {
@@ -43,10 +43,14 @@ class ToDoList {
     }
   }
 
+  checkOff(index) {
+    this.tasks[index].checkOff();
+  }
+
   showTasks() {
     for (let task of this.tasks) {
       if (task.priority) {
-        console.log(` ${this.tasks.indexOf(task) + 1}: ${task.description}  (Priority!)`);
+        console.log(` ${this.tasks.indexOf(task) + 1}: ${task.description}  (!)`);
       } else {
         console.log(` ${this.tasks.indexOf(task) + 1}: ${task.description}`);
       }
@@ -91,3 +95,5 @@ console.log(myToDoS);
 
 console.log(myToDoS);
 myToDoS.showTasks();
+myToDoS.deleteTask(1);
+console.log(myToDoS);
