@@ -145,6 +145,14 @@ if (process.argv[2] === '--interactive') {
       console.log(`Marking "${myToDoS.tasks[index - 1].description}" as complete...`);
       console.log();
       myToDoS.show();
+      if (readlineSync.keyInYN('Do you want to delete it?')) {
+        console.log(`Deleting "${myToDoS.tasks[index - 1].description}" from your To-Do list...`);
+        console.log();
+        myToDoS.delete(index - 1);
+        myToDoS.show();
+      } else {
+        console.log('Ok.');
+      }
     },
     done: function() {
       // Update text file
