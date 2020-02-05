@@ -88,7 +88,11 @@ function readFromTextFile(file, toDoList) {
   let strings = fs.readFileSync(file, 'utf-8').trimEnd().split('\n');
   for (let item of strings) {
     let properties = item.split('%');
-    toDoList.tasks.push(new Task(properties[0], JSON.parse(properties[1]), JSON.parse(properties[2])));
+    if (properties.length === 3) {
+      toDoList.tasks.push(new Task(properties[0], JSON.parse(properties[1]), JSON.parse(properties[2])));
+    } else {
+      toDoList.tasks.push(new Task(properties[0]));
+    }
   }
 }
 
@@ -140,7 +144,7 @@ if (process.argv[2] === '--interactive') {
     },
     checkOff: function(index) {
       myToDoS.checkOff(index - 1);
-      console.log(`Marking "${myToDoS.task[index - 1]}" as complete...`);
+      console.log(`Marking "${myToDoS.tasks[index - 1].description}" as complete...`);
     },
     done: function() {
       // Update text file
