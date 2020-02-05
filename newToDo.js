@@ -90,6 +90,14 @@ for (let description of fs.readFileSync('todos.txt', 'utf-8').trimEnd().split('\
   myToDoS.add(new Task(description));
 }
 
+function updateTextFile(myToDoS) {
+  let taskString = '';
+  for (let task of myToDoS.tasks) {
+    taskString += task.description + '\n';
+  }
+  fs.writeFileSync('todos.txt', taskString);
+}
+
 // Interactive shell
 if (process.argv[2] === '--interactive') {
   myToDoS.show();
@@ -126,6 +134,9 @@ if (process.argv[2] === '--interactive') {
       console.log(`Marking "${myToDoS.task[index - 1]}" as complete...`);
     },
     done: function() {
+      // Update text file
+      updateTextFile(myToDoS);
+      console.log('Changes saved');
       return true;
     },
   });
