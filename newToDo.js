@@ -63,7 +63,7 @@ class ToDoList {
 class Task {
   constructor(description, priority = false) {
     this.description = description;
-    this.status = 'incomplete';
+    this.complete = false;
     this.priority = priority;
   }
 
@@ -80,23 +80,32 @@ class Task {
   }
 
   checkOff() {
-    this.status = 'complete';
+    this.complete = true;
   }
+}
+
+function readFromTextFile(file, toDoList) {
+  let strings = fs.readFileSync(file, 'utf-8').trimEnd().split('\n');
+  for (let item of strings) {
+    let properties = item.split('%');
+    toDoList.tasks.push(new Task(properties[0], JSON.parse(properties[1]), JSON.parse(properties[2])));
+  }
+}
+
+function updateTextFile(file, toDoList) {
+  let list = [];
+  for (let task of toDoList.tasks) {
+    let taskString = '';
+    taskString += task.description;
+    taskString += '%' + task.complete.toString();
+    taskString += '%' + task.priority.toString();
+    list.push(taskString);
+  }
+  fs.writeFileSync(file, list.join('\n'));
 }
 
 const myToDoS = new ToDoList();
-
-for (let description of fs.readFileSync('todos.txt', 'utf-8').trimEnd().split('\n')) {
-  myToDoS.add(new Task(description));
-}
-
-function updateTextFile(myToDoS) {
-  let taskString = '';
-  for (let task of myToDoS.tasks) {
-    taskString += task.description + '\n';
-  }
-  fs.writeFileSync('todos.txt', taskString);
-}
+readFromTextFile('todos.txt', myToDoS);
 
 // Interactive shell
 if (process.argv[2] === '--interactive') {
@@ -135,7 +144,7 @@ if (process.argv[2] === '--interactive') {
     },
     done: function() {
       // Update text file
-      updateTextFile(myToDoS);
+      updateTextFile('todos.txt', myToDoS);
       console.log('Changes saved');
       return true;
     },
