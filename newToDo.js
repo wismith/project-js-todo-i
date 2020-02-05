@@ -50,12 +50,10 @@ class ToDoList {
 
   show() {
     console.log(' Here\'s your To-Do list: ');
+    let checkboxDict = { true: '[X]', false: '[_]' };
+    let priorityDict = { true: '(!)', false: '' };
     for (let task of this.tasks) {
-      if (task.priority) {
-        console.log(` ${this.tasks.indexOf(task) + 1}: ${task.description}  (!)`);
-      } else {
-        console.log(` ${this.tasks.indexOf(task) + 1}: ${task.description}`);
-      }
+      console.log(` ${checkboxDict[task.complete]} ${this.tasks.indexOf(task) + 1}: ${task.description}  ${priorityDict[task.priority]}`);
     }
   }
 }
@@ -145,6 +143,8 @@ if (process.argv[2] === '--interactive') {
     checkOff: function(index) {
       myToDoS.checkOff(index - 1);
       console.log(`Marking "${myToDoS.tasks[index - 1].description}" as complete...`);
+      console.log();
+      myToDoS.show();
     },
     done: function() {
       // Update text file
