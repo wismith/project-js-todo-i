@@ -15,8 +15,9 @@ Keep the responsibilities separated as best you can:
 4. Displaying information to the user
 5. Rather user input and taking the appropriate actions
 */
-// let process = require('process');
+let process = require('process');
 let fs = require('fs');
+let readlineSync = require('readline-sync');
 
 class ToDoList {
   constructor() {
@@ -27,11 +28,11 @@ class ToDoList {
     this.tasks.push(task);
   }
 
-  deleteTask(index) {
+  delete(index) {
     return this.tasks.splice(index, 1);
   }
 
-  editTask(index, change) {
+  edit(index, change) {
     this.tasks[index].edit(change);
   }
 
@@ -47,7 +48,8 @@ class ToDoList {
     this.tasks[index].checkOff();
   }
 
-  showTasks() {
+  show() {
+    console.log(' Here\'s your To-Do list: ');
     for (let task of this.tasks) {
       if (task.priority) {
         console.log(` ${this.tasks.indexOf(task) + 1}: ${task.description}  (!)`);
@@ -82,18 +84,49 @@ class Task {
   }
 }
 
-let makeBed = new Task('Make my bed');
-makeBed.prioritize();
-console.log(makeBed);
 const myToDoS = new ToDoList();
 
 for (let description of fs.readFileSync('todos.txt', 'utf-8').trimEnd().split('\n')) {
-  myToDoS.addTask(description);
+  myToDoS.add(new Task(description));
 }
 
-console.log(myToDoS);
-
-console.log(myToDoS);
-myToDoS.showTasks();
-myToDoS.deleteTask(1);
-console.log(myToDoS);
+// Interactive shell
+if (process.argv[2] === '--interactive') {
+  myToDoS.show();
+  readlineSync.promptCLLoop({
+    show: function() {
+      myToDoS.show();
+    },
+    add: function(description) {
+      myToDoS.tasks.push(new Task(description));
+      console.log(`Adding "${description}" to your To-Do list...`);
+      console.log();
+      myToDoS.show();
+    },
+    delete: function(index) {
+      console.log(`Deleting "${myToDoS.tasks[index - 1].description}" from your To-Do list...`);
+      console.log();
+      myToDoS.delete(index - 1);
+      myToDoS.show();
+    },
+    edit: function(index, change) {
+      console.log(`Editing "${myToDoS.tasks[index - 1].description}"...`);
+      myToDoS.edit(index - 1, change);
+      console.log();
+      myToDoS.show();
+    },
+    togglePriority: function(index) {
+      myToDoS.togglePriority(index - 1);
+      console.log(`Changing priority of "${myToDoS.tasks[index - 1].description}"`);
+      console.log();
+      myToDoS.show();
+    },
+    checkOff: function(index) {
+      myToDoS.checkOff(index - 1);
+      console.log(`Marking "${myToDoS.task[index - 1]}" as complete...`);
+    },
+    done: function() {
+      return true;
+    },
+  });
+}
