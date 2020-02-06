@@ -88,7 +88,6 @@ function readFromTextFile(file, toDoList) {
     let properties = item.split('%');
     if (properties.length === 3) {
       toDoList.tasks.push(new Task(properties[0], JSON.parse(properties[1]), JSON.parse(properties[2])));
-      console.log(toDoList);
     } else {
       toDoList.tasks.push(new Task(properties[0]));
     }
