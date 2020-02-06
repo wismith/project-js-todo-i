@@ -59,9 +59,9 @@ class ToDoList {
 }
 
 class Task {
-  constructor(description, priority = false) {
+  constructor(description, complete = false, priority = false) {
     this.description = description;
-    this.complete = false;
+    this.complete = complete;
     this.priority = priority;
   }
 
@@ -88,6 +88,7 @@ function readFromTextFile(file, toDoList) {
     let properties = item.split('%');
     if (properties.length === 3) {
       toDoList.tasks.push(new Task(properties[0], JSON.parse(properties[1]), JSON.parse(properties[2])));
+      console.log(toDoList);
     } else {
       toDoList.tasks.push(new Task(properties[0]));
     }
@@ -115,33 +116,43 @@ if (process.argv[2] === '--interactive') {
   readlineSync.promptCLLoop({
     show: function() {
       myToDoS.show();
+      console.log();
     },
     add: function(description) {
       myToDoS.tasks.push(new Task(description));
+      console.log();
       console.log(`Adding "${description}" to your To-Do list...`);
       console.log();
       myToDoS.show();
+      console.log();
     },
     delete: function(index) {
+      console.log();
       console.log(`Deleting "${myToDoS.tasks[index - 1].description}" from your To-Do list...`);
       console.log();
       myToDoS.delete(index - 1);
       myToDoS.show();
+      console.log();
     },
     edit: function(index, change) {
+      console.log();
       console.log(`Editing "${myToDoS.tasks[index - 1].description}"...`);
       myToDoS.edit(index - 1, change);
       console.log();
       myToDoS.show();
+      console.log();
     },
     togglePriority: function(index) {
       myToDoS.togglePriority(index - 1);
+      console.log();
       console.log(`Changing priority of "${myToDoS.tasks[index - 1].description}"`);
       console.log();
       myToDoS.show();
+      console.log();
     },
     checkOff: function(index) {
       myToDoS.checkOff(index - 1);
+      console.log();
       console.log(`Marking "${myToDoS.tasks[index - 1].description}" as complete...`);
       console.log();
       myToDoS.show();
@@ -150,14 +161,18 @@ if (process.argv[2] === '--interactive') {
         console.log();
         myToDoS.delete(index - 1);
         myToDoS.show();
+        console.log();
       } else {
         console.log('Ok.');
+        console.log();
       }
     },
     done: function() {
       // Update text file
       updateTextFile('todos.txt', myToDoS);
+      console.log();
       console.log('Changes saved');
+      console.log();
       return true;
     },
   });
