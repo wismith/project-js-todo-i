@@ -1,30 +1,34 @@
-let TodoList = require('./lib/TodoList');
-let Task = require('./lib/Task');
+let process = require('process');
+
+let printUsage = require('./lib/printUsage');
 
 let TodoListController = require('./lib/TodoListController');
-
 let TodoFile = require('./lib/TodoFile');
 
 let TODO_FILENAME = './todos.txt';
 
 let todoFile = new TodoFile(TODO_FILENAME);
-let controller = new TodoListController(todoFile)
+let controller = new TodoListController(todoFile);
 
-controller.show();
-console.log('-------');
+let userArgs = process.argv.slice(2);
+let command = userArgs[0];
+let input = userArgs[1];
 
-console.log();
-console.log('Marking a task complete...');
-console.log('-------');
+function errorMesssageAndExit(message) {
+  console.log(`Error: ${message}`);
+  console.log();
 
-controller.complete(2);
+  printUsage();
 
-controller.show();
+  process.exit(1);
+}
 
-console.log();
-console.log('Removing a task...');
-console.log('-------');
+if (command === undefined) {
+  errorMesssageAndExit('No command given');
+}
 
-controller.remove(1);
-
-controller.show();
+try {
+  controller.dispatch(command, input);
+} catch (err) {
+  errorMesssageAndExit(err.message);
+}
