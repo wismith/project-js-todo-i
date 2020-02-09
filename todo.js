@@ -35,3 +35,5 @@ console.log('-------');
 list.removeTaskAtPosition(1);
 
 showList(list);
+
+todoFile.saveTodoList(list);
