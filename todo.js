@@ -1,6 +1,8 @@
 let TodoList = require('./lib/TodoList');
 let Task = require('./lib/Task');
 
+let TodoFile = require('./lib/TodoFile');
+
 function showList(todoList) {
   for (let pos = 1; pos <= todoList.length(); pos++) {
     let task = todoList.taskAtPosition(pos);
@@ -9,11 +11,11 @@ function showList(todoList) {
   }
 }
 
-let list = new TodoList();
+let TODO_FILENAME = './todos.txt';
 
-list.add(new Task('Walk the dog', false));
-list.add(new Task('Sing a song', false));
-list.add(new Task('Bake a cake', false));
+let todoFile = new TodoFile(TODO_FILENAME);
+
+let list = todoFile.loadTodoList();
 
 showList(list);
 console.log('-------');
