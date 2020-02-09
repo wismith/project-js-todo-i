@@ -1,39 +1,30 @@
 let TodoList = require('./lib/TodoList');
 let Task = require('./lib/Task');
 
+let TodoListController = require('./lib/TodoListController');
+
 let TodoFile = require('./lib/TodoFile');
-
-function showList(todoList) {
-  for (let pos = 1; pos <= todoList.length(); pos++) {
-    let task = todoList.taskAtPosition(pos);
-
-    console.log(`${pos}. ${task.toString()}`);
-  }
-}
 
 let TODO_FILENAME = './todos.txt';
 
 let todoFile = new TodoFile(TODO_FILENAME);
+let controller = new TodoListController(todoFile)
 
-let list = todoFile.loadTodoList();
-
-showList(list);
+controller.show();
 console.log('-------');
 
 console.log();
 console.log('Marking a task complete...');
 console.log('-------');
 
-list.taskAtPosition(2).markComplete();
+controller.complete(2);
 
-showList(list);
+controller.show();
 
 console.log();
 console.log('Removing a task...');
 console.log('-------');
 
-list.removeTaskAtPosition(1);
+controller.remove(1);
 
-showList(list);
-
-todoFile.saveTodoList(list);
+controller.show();
