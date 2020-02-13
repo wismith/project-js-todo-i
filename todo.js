@@ -15,3 +15,34 @@ Keep the responsibilities separated as best you can:
 4. Displaying information to the user
 5. Rather user input and taking the appropriate actions
 */
+
+let process = require('process');
+
+let printUsage = require('./lib/PrintUsage');
+let TodoListController = require('./lib/TodoListController');
+let TodoFile = require('./lib/TodoFile');
+let TODO_FILENAME = './todos.txt';
+
+let todoFile = new TodoFile(TODO_FILENAME);
+let controller = new TodoListController(todoFile);
+
+let userArgs = process.argv.slice(2);
+let command = userArgs[0];
+let input = userArgs[1];
+
+function errorMessageAndExit(message) {
+  console.log(`Error: ${message}`);
+  console.log();
+  printUsage();
+  process.exit(1);
+}
+
+if (command === undefined) {
+  errorMessageAndExit('No command given');
+}
+
+try {
+  controller.dispatch(command, input);
+} catch (err) {
+  errorMessageAndExit(err.message);
+}
