@@ -20,7 +20,7 @@ let process = require('process');
 
 let printUsage = require('./lib/PrintUsage');
 let TodoListController = require('./lib/TodoListController');
-let TodoDB = require('./lib/ToDoDB');
+let TodoDB = require('./lib/TodoDB');
 let TODO_DBNAME = './sql/todos.db';
 
 let todoDB = new TodoDB(TODO_DBNAME);
