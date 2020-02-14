@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "JavaScript template",
   "main": "todo.js",
-  "dependencies": {},
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
