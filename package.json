@@ -4,6 +4,7 @@
   "description": "JavaScript template",
   "main": "todo.js",
   "dependencies": {
+    "better-sqlite3": "^5.4.3",
     "columnify": "^1.5.4"
   },
   "devDependencies": {
