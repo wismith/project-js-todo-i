@@ -20,11 +20,11 @@ let process = require('process');
 
 let printUsage = require('./lib/PrintUsage');
 let TodoListController = require('./lib/TodoListController');
-let TodoFile = require('./lib/TodoFile');
-let TODO_FILENAME = './todos.txt';
+let TodoDB = require('./lib/ToDoDB');
+let TODO_DBNAME = './sql/todos.db';
 
-let todoFile = new TodoFile(TODO_FILENAME);
-let controller = new TodoListController(todoFile);
+let todoDB = new TodoDB(TODO_DBNAME);
+let controller = new TodoListController(todoDB);
 
 let userArgs = process.argv.slice(2);
 let command = userArgs[0];
