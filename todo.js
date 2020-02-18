@@ -44,6 +44,9 @@ if (command === undefined) {
 
 if (command === '--interactive') {
   controller.dispatch('show', undefined);
+  console.log();
+  console.log('Enter a command, or type "help" for a list of options:');
+  console.log();
   readlineSync.promptCLLoop({
     show: function() { controller.dispatch('show', undefined); },
     add: arg => controller.dispatch('add', arg),
@@ -51,7 +54,11 @@ if (command === '--interactive') {
     complete: arg => controller.dispatch('complete', arg),
     toggleComplete: arg => controller.dispatch('toggleComplete', arg),
     toggleImportant: arg => controller.dispatch('toggleImportant', arg),
-    help: () => printUsage(),
+    help: () => {
+      printUsage();
+      console.log('In this interactive shell, omit "node todo.js"');
+      console.log();
+    },
     done: () => true,
   });
 } else {
