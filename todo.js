@@ -17,6 +17,7 @@ Keep the responsibilities separated as best you can:
 */
 
 let process = require('process');
+let readlineSync = require('readline-sync');
 
 let printUsage = require('./lib/PrintUsage');
 let TodoListController = require('./lib/TodoListController');
@@ -41,8 +42,24 @@ if (command === undefined) {
   errorMessageAndExit('No command given');
 }
 
-try {
-  controller.dispatch(command, input);
-} catch (err) {
-  errorMessageAndExit(err.message);
+if (command === '--interactive') {
+  controller.dispatch('show', undefined);
+  readlineSync.promptCLLoop({
+    show: function() {controller.dispatch('show', undefined)},
+    add: arg => controller.dispatch('add', arg),
+    remove: arg => controller.dispatch('remove', arg),
+    complete: arg => controller.dispatch('complete', arg),
+    toggleComplete: arg => controller.dispatch('toggleComplete', arg),
+    toggleImportant: arg => controller.dispatch('toggleImportant', arg),
+    help: () => printUsage(),
+    done: () => true,
+  });
+}
+
+if (command !== '--interactive') {
+  try {
+    controller.dispatch(command, input);
+  } catch (err) {
+    errorMessageAndExit(err.message);
+  }
 }

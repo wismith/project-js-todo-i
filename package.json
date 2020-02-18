@@ -5,7 +5,8 @@
   "main": "todo.js",
   "dependencies": {
     "better-sqlite3": "^5.4.3",
-    "columnify": "^1.5.4"
+    "columnify": "^1.5.4",
+    "readline-sync": "^1.4.10"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
