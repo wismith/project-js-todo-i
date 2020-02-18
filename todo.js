@@ -45,7 +45,7 @@ if (command === undefined) {
 if (command === '--interactive') {
   controller.dispatch('show', undefined);
   readlineSync.promptCLLoop({
-    show: function() {controller.dispatch('show', undefined)},
+    show: function() { controller.dispatch('show', undefined); },
     add: arg => controller.dispatch('add', arg),
     remove: arg => controller.dispatch('remove', arg),
     complete: arg => controller.dispatch('complete', arg),
@@ -54,9 +54,7 @@ if (command === '--interactive') {
     help: () => printUsage(),
     done: () => true,
   });
-}
-
-if (command !== '--interactive') {
+} else {
   try {
     controller.dispatch(command, input);
   } catch (err) {
