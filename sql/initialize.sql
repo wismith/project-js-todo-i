@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS todo_lists (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tasks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  todo_list_id INTEGER NOT NULL,
+  description TEXT NOT NULL,
+  isComplete BOOLEAN NOT NULL DEFAULT 0,
+  isImportant BOOLEAN NOT NULL DEFAULT 0,
+  -- created_at DATETIME NOT NULL,
+  -- updated_at DATETIME NOT NULL,
+  FOREIGN KEY(todo_list_id) REFERENCES todo_lists(id)
+);
